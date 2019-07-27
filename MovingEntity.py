@@ -8,7 +8,7 @@ class MovingEntity(Entity):
         self.__ticks = 0
 
     def should_move(self):
-        self.__ticks = self.__ticks + 1
+        self.__ticks += 1
         if self.__ticks >= self.__friction:
             return True
 
@@ -21,3 +21,12 @@ class MovingEntity(Entity):
         super().set_position(x, y)
         self.__ticks = 0
 
+    def move(self):
+
+        if not self.should_move():
+            return
+
+        self._move()
+
+    def _move(self):
+        pass

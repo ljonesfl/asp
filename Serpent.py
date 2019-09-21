@@ -28,10 +28,7 @@ class Serpent(MovingEntity):
         elif self.direction == self.UP or self.direction == self.DOWN:
             self.set_friction(40)
 
-    def move(self):
-
-        if not self.should_move():
-            return
+    def _move(self):
 
         new_x = self.x
         new_y = self.y

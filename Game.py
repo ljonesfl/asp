@@ -1,4 +1,5 @@
 import curses
+import time
 from Keyboard import Keyboard
 from Serpent import Serpent
 from random import randint
@@ -22,10 +23,24 @@ class Game(object):
             randint(0, window.height)
         )
 
+
+
+        paused = False
+
         while True:
             ticks = ticks + 1
 
             ch = keyboard.get()
+
+            if paused:
+                if ch > 0:
+                    paused = False
+                else:
+                    time.sleep(.25)
+                    continue
+            else:
+                if ch == 112:
+                    paused = True
 
             if ch == 113:
                 exit()

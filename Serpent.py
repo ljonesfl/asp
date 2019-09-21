@@ -8,14 +8,15 @@ class Serpent(MovingEntity):
     UP = 2
     DOWN = 3
 
-    x = 0
-    y = 0
-    direction = 0
-    length = 2
-    body = []
-
     def __init__(self, window):
         super().__init__()
+
+        self.x = 0
+        self.y = 0
+        self.direction = 0
+        self.length = 2
+        self.body = []
+
         self.window = window
 
     def set_direction(self, direction):
@@ -25,7 +26,7 @@ class Serpent(MovingEntity):
             self.set_friction(20)
 
         elif self.direction == self.UP or self.direction == self.DOWN:
-            self.set_friction(30)
+            self.set_friction(40)
 
     def move(self):
 

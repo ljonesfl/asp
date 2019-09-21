@@ -1,13 +1,17 @@
 import curses
 import time
-from Keyboard import Keyboard
-from Serpent import Serpent
 from random import randint
 
+from Keyboard import Keyboard
+from Serpent import Serpent
+from Arena import Arena
+from Snack import Snack
+from Exceptions import Collision
 
 class Game(object):
     def __init__(self, screen):
         self.screen = screen
+        self.arena = Arena()
 
     def play(self):
         ticks = 0
@@ -23,7 +27,13 @@ class Game(object):
             randint(0, window.height)
         )
 
+        self.arena.set_player1(snake)
+        self.arena.add_moving(snake)
 
+        for x in range(0, 15):
+            snack = Snack(window)
+            snack.draw()
+            self.arena.add_static(snack)
 
         paused = False
 
@@ -58,4 +68,6 @@ class Game(object):
                 snake.set_direction(snake.DOWN)
 
             snake.move()
+
+            self.arena.process_collisions()
 

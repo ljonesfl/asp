@@ -14,3 +14,8 @@ Use the cursor keys to control the snake.
 'p' to pause.
 
 Arrow keys to navigate.
+
+
+## Unit Tests
+
+python -m unittest

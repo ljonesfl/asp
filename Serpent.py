@@ -18,18 +18,38 @@ class Serpent(MovingEntity):
         self.body = []
 
         self.window = window
+        self.real_friction = 50
+        self.set_friction(self.real_friction)
+
+    def get_friction(self):
+        return self.real_friction
+
+    def set_friction(self, friction):
+        self.real_friction = friction
+
+        if self.direction == self.UP or self.direction == self.DOWN:
+            super().set_friction(self.real_friction * 2)
+        else:
+            super().set_friction(friction)
 
     def set_direction(self, direction):
+
+        if self.direction == self.LEFT and direction == self.RIGHT:
+            return
+
+        if self.direction == self.RIGHT and direction == self.LEFT:
+            return
+
+        if self.direction == self.UP and direction == self.DOWN:
+            return
+
+        if self.direction == self.DOWN and direction == self.UP:
+            return
+
         self.direction = direction
-
-        if self.direction == self.LEFT or self.direction == self.RIGHT:
-            self.set_friction(20)
-
-        elif self.direction == self.UP or self.direction == self.DOWN:
-            self.set_friction(40)
+        self.set_friction(self.real_friction)
 
     def _move(self):
-
         new_x = self.x
         new_y = self.y
 
@@ -61,6 +81,10 @@ class Serpent(MovingEntity):
         self.body.insert(0, position)
         self.window.addch(int(self.body[0][1]), int(self.body[0][0]), curses.ACS_CKBOARD)
 
-    def update_body(self, length):
-        self.length = length
+    def grow(self):
+        self.length += 1
+        position = [0,0]
+        position[0] = self.x
+        position[1] = self.y
 
+        self.body.append(position)

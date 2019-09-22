@@ -31,6 +31,8 @@ class MovingEntity(Entity):
             return
 
         self._move()
+        self.draw()
 
     def _move(self):
         pass
+

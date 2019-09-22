@@ -17,4 +17,4 @@ class Snack(Entity):
         self.window.addch(int(self.y), int(self.x), curses.ACS_CKBOARD)
 
     def erase(self):
-        self.window.addch(int(self.y), int(self.x), 32)
+        self.window.addch(int(self.y), int(self.x), ' ')

@@ -30,7 +30,7 @@ class Game(object):
         self.arena.set_player1(snake)
         self.arena.add_moving(snake)
 
-        for x in range(0, 15):
+        for x in range(0, 200):
             snack = Snack(window)
             snack.draw()
             self.arena.add_static(snack)
@@ -66,6 +66,8 @@ class Game(object):
 
             if ch == curses.KEY_DOWN:
                 snake.set_direction(snake.DOWN)
+
+            # @todo convert to arena.move_entities()
 
             snake.move()
 

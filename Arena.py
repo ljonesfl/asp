@@ -54,8 +54,8 @@ class Arena:
         self.del_static(snack)
         self.score += 1
 
-        snake.grow(3)
-        snake.set_friction(snake.get_friction() - 2)
+        snake.grow(20)
+        snake.set_friction(snake.get_friction() - 5)
 
         if self.get_snack_count() == 0:
             print('score ' + str(self.score))

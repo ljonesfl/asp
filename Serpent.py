@@ -18,7 +18,7 @@ class Serpent(MovingEntity):
         self.grow_by = 0
 
         self.window = window
-        self.real_friction = 100
+        self.real_friction = 30
         self.set_friction(self.real_friction)
 
     def get_friction(self):
@@ -79,7 +79,7 @@ class Serpent(MovingEntity):
 
         # draw the new head
         self.body.insert(0, position)
-        self.window.addch(int(self.body[0][1]), int(self.body[0][0]), curses.ACS_CKBOARD)
+        self.window.addch(int(self.y), int(self.x), curses.ACS_CKBOARD)
 
         # erase the tail
         if len(self.body) > 1:

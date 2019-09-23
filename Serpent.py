@@ -14,11 +14,12 @@ class Serpent(MovingEntity):
         self.x = 0
         self.y = 0
         self.direction = 0
+        self.new_direction = 0
         self.body = []
-        self.grow_by = 0
+        self.grow_by = 50
 
         self.window = window
-        self.real_friction = 30
+        self.real_friction = 50
         self.set_friction(self.real_friction)
 
     def get_friction(self):
@@ -50,10 +51,12 @@ class Serpent(MovingEntity):
         if self.direction == self.DOWN and direction == self.UP:
             return
 
-        self.direction = direction
-        self.set_friction(self.real_friction)
+        self.new_direction = direction
 
     def _move(self):
+        self.direction = self.new_direction
+        self.set_friction(self.real_friction)
+
         new_x = self.x
         new_y = self.y
 

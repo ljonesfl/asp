@@ -2,6 +2,7 @@ from Exceptions import Collision
 from Snack import Snack
 from Serpent import Serpent
 
+
 class Arena:
 
     def __init__(self):
@@ -25,11 +26,7 @@ class Arena:
 
     def process_collisions(self):
         try:
-            if self.player1.collision(self.player1):
-                raise Collision(self.player1, self.player1)
-
             self.test_all_moving()
-            self.test_all_static()
         except Collision as c:
             player1 = None
             entity = None
@@ -54,7 +51,7 @@ class Arena:
         self.del_static(snack)
         self.score += 1
 
-        snake.grow(20)
+        snake.grow(5)
         snake.set_friction(snake.get_friction() - 5)
 
         if self.get_snack_count() == 0:
@@ -76,27 +73,15 @@ class Arena:
     def test_all_moving(self):
         # Test all moving entities against static and moving
         for entity in self.moving_entities:
-            self.test_static(entity)
             self.test_moving(entity)
-
-    def test_all_static(self):
-        # Test all static entities against static and moving
-        for entity in self.static_entities:
             self.test_static(entity)
-            self.test_moving(entity)
 
     def test_moving(self, entity):
         for entity_test in self.moving_entities:
-            if entity is entity_test:
-                continue
-
             if entity.collision(entity_test):
                 raise Collision(entity, entity_test)
 
     def test_static(self, entity):
         for entity_test in self.static_entities:
-            if entity is entity_test:
-                continue
-
             if entity.collision(entity_test):
                 raise Collision(entity, entity_test)

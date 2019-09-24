@@ -30,7 +30,7 @@ class Game(object):
         self.arena.set_player1(snake)
         self.arena.add_moving(snake)
 
-        for x in range(0, 100):
+        for x in range(0, 1000):
             snack = Snack(window)
             snack.draw()
             self.arena.add_static(snack)

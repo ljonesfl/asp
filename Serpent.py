@@ -19,7 +19,7 @@ class Serpent(MovingEntity):
         self.grow_by = 50
 
         self.window = window
-        self.real_friction = 50
+        self.real_friction = 70
         self.set_friction(self.real_friction)
 
     def get_friction(self):

@@ -7,22 +7,34 @@ class Arena:
 
     def __init__(self):
         self.moving_entities = []
-        self.static_entities = []
+        self.static_entities = {}
         self.player1 = None
         self.score = 0
+        self.snack_count = 0
 
     def set_player1(self, player1):
         self.player1 = player1
 
     def add_static(self, static_entity):
-        self.static_entities.append(static_entity)
+        try:
+            self.static_entities[static_entity.x].append(static_entity)
+        except KeyError:
+            self.static_entities[static_entity.x] = [];
+            self.static_entities[static_entity.x].append(static_entity)
+
+        if isinstance(static_entity, Snack):
+            self.snack_count += 1
 
     def add_moving(self, moving_entity):
         self.moving_entities.append(moving_entity)
 
     def del_static(self, static_entity):
-        index = self.static_entities.index(static_entity)
-        del self.static_entities[index]
+        statics = self.static_entities[static_entity.x]
+        index = statics.index(static_entity)
+        del statics[index]
+
+        if isinstance(static_entity, Snack):
+            self.snack_count -= 1
 
     def process_collisions(self):
         try:
@@ -52,7 +64,7 @@ class Arena:
         self.score += 1
 
         snake.grow(5)
-        snake.set_friction(snake.get_friction() - 5)
+        snake.set_friction(snake.get_friction() - 2)
 
         if self.get_snack_count() == 0:
             print('score ' + str(self.score))
@@ -63,12 +75,7 @@ class Arena:
         exit()
 
     def get_snack_count(self):
-        count = 0
-        for entity in self.static_entities:
-            if isinstance(entity, Snack):
-                count += 1
-
-        return count
+        return self.snack_count
 
     def test_all_moving(self):
         # Test all moving entities against static and moving
@@ -82,6 +89,10 @@ class Arena:
                 raise Collision(entity, entity_test)
 
     def test_static(self, entity):
-        for entity_test in self.static_entities:
-            if entity.collision(entity_test):
-                raise Collision(entity, entity_test)
+        try:
+            statics = self.static_entities[entity.x]
+            for entity_test in statics:
+                if entity.collision(entity_test):
+                    raise Collision(entity, entity_test)
+        except KeyError:
+            pass

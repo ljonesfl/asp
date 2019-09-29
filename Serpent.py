@@ -1,5 +1,5 @@
 from MovingEntity import MovingEntity
-
+from Exceptions import BoundsError
 
 class Serpent(MovingEntity):
 
@@ -68,7 +68,7 @@ class Serpent(MovingEntity):
             new_y = self.y + 1
 
         if not self.window.in_bounds(new_x, new_y):
-            return
+            raise BoundsError
 
         self.set_position(new_x, new_y)
 

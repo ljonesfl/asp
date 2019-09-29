@@ -1,5 +1,7 @@
 from Exceptions import Collision
 from Exceptions import GameOver
+from Exceptions import BoundsError
+from Exceptions import LevelCompleted
 from Snack import Snack
 from Poison import Poison
 from Serpent import Serpent
@@ -20,7 +22,11 @@ class Arena:
     def set_level(self, level):
         self.level = level
 
-        for x in range(0, level.snacks):
+        self.moving_entities = []
+        self.static_entities = {}
+        self.snack_count = 0
+
+        for x in range(0, level.entities):
             entity = self.entity_factory()
             entity.draw()
             self.add_static(entity)
@@ -93,17 +99,17 @@ class Arena:
         self.del_static(snack)
         self.score += 1
 
-        snake.grow(self.level.snack_factor)
-        snake.set_friction(snake.get_friction() - self.level.friction_factor)
+        snake.grow(self.level.snack_growth_factor)
+        snake.set_friction(snake.get_friction() - self.level.snake_friction_factor)
 
         if self.get_snack_count() == 0:
-            raise GameOver
+            raise LevelCompleted
 
     def snake_eats_poison(self, poison, snake):
-        raise GameOver
+        raise GameOver("You ate the poison!!!")
 
     def snake_eats_self(self,snake):
-        raise GameOver
+        raise GameOver("You bit yourself!!!")
 
     def get_snack_count(self):
         return self.snack_count
@@ -129,21 +135,22 @@ class Arena:
             pass
 
     def entity_factory(self):
-        type = randint(0, 9)
+        entity_type = randint(0, self.level.poison_ratio - 1)
 
-        entity = None
-
-        if type % 2:
-            entity = Snack(self.window)
-        else:
+        if entity_type == 0:
             entity = Poison(self.window)
+        else:
+            entity = Snack(self.window)
 
         return entity
 
     def tick(self):
 
-        for entity in self.moving_entities:
-            entity.move()
+        try:
+            for entity in self.moving_entities:
+                entity.move()
+        except BoundsError:
+            raise GameOver("You went off the end of the world!!!")
 
         self.process_collisions()
 

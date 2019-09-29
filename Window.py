@@ -1,4 +1,4 @@
-import _curses
+import curses
 from Exceptions import BoundsError
 
 
@@ -20,12 +20,17 @@ class Window(object):
 
         return True
 
-    def addch(self, y, x, char):
+    def put_char(self, x, y, char, color):
 
         if not self.in_bounds(x, y):
             raise BoundsError
 
         try:
-            self.window.addch(y, x, char)
-        except _curses.error as e:
+            self.window.addstr(y, x, char, curses.color_pair(color))
+        except curses.error as e:
             pass
+
+    def center_text(self, y, text):
+        length = len(text)
+
+        self.window.addstr(int(y), int((self.width - length) / 2), text, curses.A_REVERSE)

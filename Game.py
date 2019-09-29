@@ -1,39 +1,28 @@
 import curses
 import time
-from random import randint
 
 from Keyboard import Keyboard
-from Serpent import Serpent
 from Arena import Arena
-from Snack import Snack
-from Exceptions import Collision
+from Level import Level
+from MovingEntity import MovingEntity
+from Exceptions import GameOver
+
 
 class Game(object):
     def __init__(self, screen):
         self.screen = screen
-        self.arena = Arena()
+        self.arena = None
 
     def play(self):
         ticks = 0
         window = self.screen.create_window()
         keyboard = Keyboard(window)
 
-        snake = Serpent(window)
+        self.arena = Arena(window)
 
-        snake.set_direction(randint(0, 3))
+        level = Level()
 
-        snake.set_position(
-            randint(0, window.width),
-            randint(0, window.height)
-        )
-
-        self.arena.set_player1(snake)
-        self.arena.add_moving(snake)
-
-        for x in range(0, 1000):
-            snack = Snack(window)
-            snack.draw()
-            self.arena.add_static(snack)
+        self.arena.set_level(level)
 
         paused = False
 
@@ -56,20 +45,26 @@ class Game(object):
                 exit()
 
             if ch == curses.KEY_RIGHT:
-                snake.set_direction(snake.RIGHT)
+                self.arena.player1.set_direction(MovingEntity.RIGHT)
 
             if ch == curses.KEY_LEFT:
-                snake.set_direction(snake.LEFT)
+                self.arena.player1.set_direction(MovingEntity.LEFT)
 
             if ch == curses.KEY_UP:
-                snake.set_direction(snake.UP)
+                self.arena.player1.set_direction(MovingEntity.UP)
 
             if ch == curses.KEY_DOWN:
-                snake.set_direction(snake.DOWN)
+                self.arena.player1.set_direction(MovingEntity.DOWN)
 
-            # @todo convert to arena.move_entities()
+            try:
+                self.arena.tick()
 
-            snake.move()
+            except GameOver:
+                self.screen.clear()
+                self.screen.screen.refresh()
+                window.center_text(int(window.height/2), "Game Over")
+                window.center_text(int(window.height/2) + 5, "Final score: " + str(self.arena.score) + " ")
+                while keyboard.get() <= 0:
+                    time.sleep(1)
 
-            self.arena.process_collisions()
-
+                exit()

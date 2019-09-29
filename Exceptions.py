@@ -12,3 +12,6 @@ class Collision(Error):
         self.entity1 = entity1
         self.entity2 = entity2
 
+
+class GameOver(Error):
+    pass

@@ -2,6 +2,10 @@ from Entity import Entity
 
 
 class MovingEntity(Entity):
+    LEFT = 0
+    RIGHT = 1
+    UP = 2
+    DOWN = 3
 
     def __init__(self):
         super().__init__()

@@ -1,16 +1,43 @@
 from Exceptions import Collision
+from Exceptions import GameOver
 from Snack import Snack
+from Poison import Poison
 from Serpent import Serpent
+from random import randint
 
 
 class Arena:
 
-    def __init__(self):
+    def __init__(self, window):
         self.moving_entities = []
         self.static_entities = {}
         self.player1 = None
         self.score = 0
         self.snack_count = 0
+        self.level = None
+        self.window = window
+
+    def set_level(self, level):
+        self.level = level
+
+        for x in range(0, level.snacks):
+            entity = self.entity_factory()
+            entity.draw()
+            self.add_static(entity)
+
+        snake = Serpent(self.window)
+
+        snake.set_direction(randint(0, 3))
+
+        snake.set_position(
+            randint(0, self.window.width),
+            randint(0, self.window.height)
+        )
+
+        snake.grow(self.level.initial_length)
+
+        self.set_player1(snake)
+        self.add_moving(snake)
 
     def set_player1(self, player1):
         self.player1 = player1
@@ -55,6 +82,9 @@ class Arena:
                 if isinstance(entity, Snack):
                     self.snake_eats_snack(entity, player1)
 
+                if isinstance(entity, Poison):
+                    self.snake_eats_poison(entity, player1)
+
                 if isinstance(entity, Serpent):
                     self.snake_eats_self(player1)
 
@@ -63,16 +93,17 @@ class Arena:
         self.del_static(snack)
         self.score += 1
 
-        snake.grow(5)
-        snake.set_friction(snake.get_friction() - 2)
+        snake.grow(self.level.snack_factor)
+        snake.set_friction(snake.get_friction() - self.level.friction_factor)
 
         if self.get_snack_count() == 0:
-            print('score ' + str(self.score))
-            exit()
+            raise GameOver
+
+    def snake_eats_poison(self, poison, snake):
+        raise GameOver
 
     def snake_eats_self(self,snake):
-        print('OUCH! score ' + str(self.score))
-        exit()
+        raise GameOver
 
     def get_snack_count(self):
         return self.snack_count
@@ -96,3 +127,23 @@ class Arena:
                     raise Collision(entity, entity_test)
         except KeyError:
             pass
+
+    def entity_factory(self):
+        type = randint(0, 9)
+
+        entity = None
+
+        if type % 2:
+            entity = Snack(self.window)
+        else:
+            entity = Poison(self.window)
+
+        return entity
+
+    def tick(self):
+
+        for entity in self.moving_entities:
+            entity.move()
+
+        self.process_collisions()
+

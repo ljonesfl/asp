@@ -1,12 +1,7 @@
-import curses
 from MovingEntity import MovingEntity
 
 
 class Serpent(MovingEntity):
-    LEFT = 0
-    RIGHT = 1
-    UP = 2
-    DOWN = 3
 
     def __init__(self, window):
         super().__init__()
@@ -16,7 +11,7 @@ class Serpent(MovingEntity):
         self.direction = 0
         self.new_direction = 0
         self.body = []
-        self.grow_by = 50
+        self.grow_by = 0
 
         self.window = window
         self.real_friction = 70
@@ -82,15 +77,16 @@ class Serpent(MovingEntity):
 
         # draw the new head
         self.body.insert(0, position)
-        self.window.addch(int(self.y), int(self.x), curses.ACS_CKBOARD)
+        self.window.put_char(int(self.x), int(self.y), ' ', 1)
 
         # erase the tail
         if len(self.body) > 1:
             if not self.grow_by:
                 end = self.body.pop()
-                self.window.addch(int(end[1]), int(end[0]), ' ')
+                self.window.put_char(int(end[0]), int(end[1]), ' ', 4)
             else:
-                self.grow_by -= 1
+                if self.grow_by:
+                    self.grow_by -= 1
 
         super().draw()
 

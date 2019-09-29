@@ -2,7 +2,7 @@ from random import randint
 from Entity import Entity
 
 
-class Snack(Entity):
+class Poison(Entity):
     def __init__(self, window):
         super().__init__()
         self.window = window
@@ -13,7 +13,7 @@ class Snack(Entity):
         )
 
     def draw(self):
-        self.window.put_char(int(self.x), int(self.y), ' ', 2)
+        self.window.put_char(int(self.x), int(self.y), ' ', 3)
 
     def erase(self):
         self.window.put_char(int(self.x), int(self.y), ' ', 4)

@@ -38,5 +38,6 @@ class Screen:
 
         return window
 
-    def clear(self):
-        self.screen.clear()
+#    def clear(self):
+#        self.screen.clear()
+#        self.screen.refresh()

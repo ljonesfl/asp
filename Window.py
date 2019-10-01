@@ -34,3 +34,6 @@ class Window(object):
         length = len(text)
 
         self.window.addstr(int(y), int((self.width - length) / 2), text, curses.A_REVERSE)
+
+    def clear(self):
+        self.window.clear()

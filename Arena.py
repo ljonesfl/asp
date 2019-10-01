@@ -6,6 +6,7 @@ from Snack import Snack
 from Poison import Poison
 from Serpent import Serpent
 from random import randint
+from MovingEntity import MovingEntity
 
 
 class Arena:
@@ -33,8 +34,6 @@ class Arena:
 
         snake = Serpent(self.window)
 
-        snake.set_direction(randint(0, 3))
-
         snake.set_position(
             randint(0, self.window.width),
             randint(0, self.window.height)
@@ -48,15 +47,31 @@ class Arena:
     def set_player1(self, player1):
         self.player1 = player1
 
+        if self.player1.x < 20:
+            self.player1.set_direction(MovingEntity.LEFT)
+
+        if self.player1.x > self.window.width - 20:
+            self.player1.set_direction(MovingEntity.RIGHT)
+
+        if self.player1.y < 20:
+            self.player1.set_direction(MovingEntity.DOWN)
+
+        if self.player1.y > self.window.height - 20:
+            self.player1.set_direction(MovingEntity.UP)
+
     def add_static(self, static_entity):
         try:
+            self.test_static(static_entity)
             self.static_entities[static_entity.x].append(static_entity)
+            if isinstance(static_entity, Snack):
+                self.snack_count += 1
+        except Collision:
+            pass
         except KeyError:
             self.static_entities[static_entity.x] = [];
             self.static_entities[static_entity.x].append(static_entity)
-
-        if isinstance(static_entity, Snack):
-            self.snack_count += 1
+            if isinstance(static_entity, Snack):
+                self.snack_count += 1
 
     def add_moving(self, moving_entity):
         self.moving_entities.append(moving_entity)

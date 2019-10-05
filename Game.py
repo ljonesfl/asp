@@ -2,7 +2,6 @@ import time
 import sys
 import curses
 
-from Keyboard import Keyboard
 from Arena import Arena
 from Level import Level
 from MovingEntity import MovingEntity
@@ -11,12 +10,11 @@ from Exceptions import LevelCompleted
 
 
 class Game(object):
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self, window, keyboard):
         self.arena = None
 
-        self.window = self.screen.create_window()
-        self.keyboard = Keyboard(self.window)
+        self.window = window
+        self.keyboard = keyboard
         self.levels = []
         self.init_levels()
 
@@ -30,19 +28,19 @@ class Game(object):
     def init_levels(self):
         level1 = Level()
         level2 = Level()
-        level2.initial_length = 20
+        level2.initial_snake_length = 20
         level2.entities = 50
         level2.poison_ratio = 7
         level2.snack_growth_factor = 3
         level2.initial_snake_friction = 45
         level3 = Level()
-        level3.initial_length = 30
+        level3.initial_snake_length = 30
         level3.entities = 75
         level3.poison_ratio = 5
         level3.snack_growth_factor = 5
         level3.initial_snake_friction = 40
         level4 = Level()
-        level4.initial_length = 40
+        level4.initial_snake_length = 40
         level4.entities = 100
         level4.poison_ratio = 5
         level4.snack_growth_factor = 7
@@ -115,7 +113,6 @@ class Game(object):
 
     def level_completed_screen(self):
         self.window.clear()
-        self.screen.screen.refresh()
         self.window.center_text(int(self.window.height / 2), "Level " + str(self.current_level) + " Completed")
         self.window.center_text(int(self.window.height / 2) + 5, "Current Score: " + str(self.arena.score) + " ")
 
@@ -138,7 +135,6 @@ class Game(object):
 
     def start_screen(self):
         self.window.clear()
-        self.screen.screen.refresh()
         self.window.center_text(int(self.window.height / 2), "ASP")
         self.window.center_text(int(self.window.height / 2) - 10, "Designed by Abigail Jones")
         self.window.center_text(int(self.window.height / 2) - 5, "Programmed by Lee Jones")

@@ -12,8 +12,19 @@ class MovingEntity(Entity):
 
         self.__friction = 0
         self.__ticks = 0
+        self.direction = 0
+        self.__is_moving = True
+
+    def set_is_moving(self, moving):
+        self.__is_moving = moving
+
+    def get_is_moving(self):
+        return self.__is_moving
 
     def should_move(self):
+        if not self.get_is_moving():
+            return False
+
         self.__ticks += 1
         if self.__ticks >= self.__friction:
             return True
@@ -29,6 +40,9 @@ class MovingEntity(Entity):
     def set_position(self, x, y):
         super().set_position(x, y)
         self.__ticks = 0
+
+    def set_direction(self, direction):
+        self.direction = direction
 
     def move(self):
         if not self.should_move():

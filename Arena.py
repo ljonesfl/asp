@@ -39,7 +39,7 @@ class Arena:
             randint(0, self.window.height)
         )
 
-        snake.grow(self.level.initial_length)
+        snake.grow(self.level.initial_snake_length)
 
         self.set_player1(snake)
         self.add_moving(snake)

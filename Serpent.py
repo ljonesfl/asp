@@ -1,14 +1,12 @@
 from MovingEntity import MovingEntity
 from Exceptions import BoundsError
 
+
 class Serpent(MovingEntity):
 
     def __init__(self, window):
         super().__init__()
 
-        self.x = 0
-        self.y = 0
-        self.direction = 0
         self.new_direction = 0
         self.body = []
         self.grow_by = 0

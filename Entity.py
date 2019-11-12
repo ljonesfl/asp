@@ -1,9 +1,13 @@
+from CellGrid import CellGrid
+from Cell import Cell
+
 
 class Entity(object):
 
-    def __init__(self):
+    def __init__(self, grid):
         self.x = 0
         self.y = 0
+        self.grid = grid
 
     def set_position(self, x, y):
         if x < 0:
@@ -24,7 +28,8 @@ class Entity(object):
         return collided
 
     def draw(self):
-        pass
+        cell = Cell(self.x, self.y, 2, self)
+        self.grid.add_cell(cell)
 
     def erase(self):
-        pass
+        self.grid.del_cell_at(int(self.x), int(self.y))

@@ -7,8 +7,8 @@ class MovingEntity(Entity):
     UP = 2
     DOWN = 3
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, grid):
+        super().__init__(grid)
 
         self.__friction = 0
         self.__ticks = 0
@@ -46,10 +46,12 @@ class MovingEntity(Entity):
 
     def move(self):
         if not self.should_move():
-            return
+            return False
 
         self._move()
         self.draw()
+
+        return True
 
     def _move(self):
         pass

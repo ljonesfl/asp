@@ -1,19 +1,17 @@
 from random import randint
 from Entity import Entity
+from Cell import Cell
 
 
 class Poison(Entity):
-    def __init__(self, window):
-        super().__init__()
-        self.window = window
+    def __init__(self, grid):
+        super().__init__(grid)
 
         self.set_position(
-            randint(0, window.width-1),
-            randint(0, window.height-1)
+            randint(0, grid.width-1),
+            randint(0, grid.height-1)
         )
 
     def draw(self):
-        self.window.put_char(int(self.x), int(self.y), ' ', 3)
-
-    def erase(self):
-        self.window.put_char(int(self.x), int(self.y), ' ', 4)
+        cell = Cell(self.x, self.y, 3, self)
+        self.grid.add_cell(cell)

@@ -23,7 +23,7 @@ class Game(object):
         else:
             self.current_level = 1
 
-        self.arena = Arena(self.window)
+        self.arena = Arena(self.window, self.window.width, self.window.height)
 
     def init_levels(self):
         level1 = Level()

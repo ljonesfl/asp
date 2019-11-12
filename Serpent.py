@@ -1,17 +1,19 @@
 from MovingEntity import MovingEntity
 from Exceptions import BoundsError
+from CellGrid import CellGrid
+from Cell import Cell
 
 
 class Serpent(MovingEntity):
 
-    def __init__(self, window):
-        super().__init__()
+    def __init__(self, grid):
+        super().__init__(grid)
 
         self.new_direction = 0
         self.body = []
         self.grow_by = 0
+        self.grid = grid
 
-        self.window = window
         self.real_friction = 70
         self.set_friction(self.real_friction)
 
@@ -65,7 +67,7 @@ class Serpent(MovingEntity):
         elif self.direction == self.DOWN:
             new_y = self.y + 1
 
-        if not self.window.in_bounds(new_x, new_y):
+        if not self.grid.is_in_bounds(new_x, new_y):
             raise BoundsError
 
         self.set_position(new_x, new_y)
@@ -75,38 +77,18 @@ class Serpent(MovingEntity):
 
         # draw the new head
         self.body.insert(0, position)
-        self.window.put_char(int(self.x), int(self.y), ' ', 1)
+
+        cell = Cell(int(self.x), int(self.y), 1, self)
+        self.grid.add_cell(cell)
 
         # erase the tail
         if len(self.body) > 1:
             if not self.grow_by:
                 end = self.body.pop()
-                self.window.put_char(int(end[0]), int(end[1]), ' ', 4)
+                self.grid.del_cell_at(int(end[0]), int(end[1]))
             else:
                 if self.grow_by:
                     self.grow_by -= 1
 
-        super().draw()
-
     def grow(self,size):
         self.grow_by += size
-
-    def collision(self, entity):
-        collided = False
-
-        start = 0
-        end = len(self.body)
-
-        # if checking for a self collision, don't look for the head position.
-
-        if entity == self:
-            start = 1
-
-        for x in range(start, end):
-            cell = self.body[x]
-
-            if cell[0] == entity.x and cell[1] == entity.y:
-                collided = True
-
-        return collided
-

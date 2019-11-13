@@ -1,4 +1,6 @@
-## 0.5.1
+## 0.6.0
+
+* Introduced CellGrid/Cells. Completely refactored collision detection.
 
 ## 0.0.5 2019-10-06
 First playable release.

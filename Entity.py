@@ -1,3 +1,7 @@
+"""
+An entity is an object that contains a position.
+"""
+
 from CellGrid import CellGrid
 from Cell import Cell
 

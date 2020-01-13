@@ -1,3 +1,9 @@
+"""
+CellGrid is a 2d representation of the screen.
+The grid is a collection of Cell objects. Anything drawn on the screen will be represented by a location in the grid.
+A collision will take place any time an attempt is made to draw a cell upon an existing cell.
+"""
+
 from Cell import Cell
 from Exceptions import Collision
 from Exceptions import BoundsError

@@ -34,5 +34,3 @@ class ArenaTest(unittest.TestCase):
         arena.add_static(entity1)
         arena.add_static(entity2)
 
-        arena.process_collisions()
-

@@ -1,3 +1,10 @@
+"""
+A moving entity contains a direction and friction.
+Friction is basically the inverse of speed.
+The higher the friction, the slower the object moves. Friction is the number of ticks that take place between movements.
+A friction of zero means that there is a 1:1 ration between tick and movements.
+"""
+
 from Entity import Entity
 
 

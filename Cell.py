@@ -1,3 +1,7 @@
+"""
+A cell is a physical block on the screen.
+Cells contain references to the entities that they belong to.
+"""
 
 
 class Cell(object):

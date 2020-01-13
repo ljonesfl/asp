@@ -1,3 +1,8 @@
+"""
+The game module handles configuring the levels, gathering input and passing it to the
+Arena object.
+"""
+
 import time
 import sys
 import curses

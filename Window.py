@@ -6,6 +6,8 @@ class Window(object):
 
     def __init__(self, curses_window, width, height):
         self.window = curses_window
+
+        # set getch() to non-blocking.
         self.window.nodelay(1)
         self.width = width
         self.height = height
